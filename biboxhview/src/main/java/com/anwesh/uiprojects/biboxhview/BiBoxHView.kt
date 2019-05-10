@@ -30,7 +30,7 @@ fun Float.mirrorValue(a : Int, b : Int) : Float {
     val k : Float = scaleFactor()
     return (1 - k) * a.inverse() + k * b.inverse()
 }
-fun Float.updateValue(dir : Float, a : Int, b : Int) : Float = mirrorValue(a, b)
+fun Float.updateValue(dir : Float, a : Int, b : Int) : Float = mirrorValue(a, b) * dir * scGap
 
 fun Canvas.drawVerticalH(j : Int, sc : Float, size : Float, paint : Paint) {
     save()
@@ -64,7 +64,7 @@ fun Canvas.drawBBHNode(i : Int, scale : Float, paint : Paint) {
     val sc2 : Float = scale.divideScale(1, 2)
     paint.color = foreColor
     paint.strokeWidth = Math.min(w, h) / strokeFactor
-    paint.strokeCap = Paint.Cap.ROUND 
+    paint.strokeCap = Paint.Cap.ROUND
     save()
     translate(w / 2, gap * (i + 1))
     for (j in 0..(parts - 1)) {
@@ -74,4 +74,22 @@ fun Canvas.drawBBHNode(i : Int, scale : Float, paint : Paint) {
         restore()
     }
     restore()
+}
+
+class BiBoxHView(ctx : Context) : View(ctx) {
+
+    private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    override fun onDraw(canvas : Canvas) {
+
+    }
+
+    override fun onTouchEvent(event : MotionEvent) : Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+
+            }
+        }
+        return true
+    }
 }
