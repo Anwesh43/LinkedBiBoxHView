@@ -21,6 +21,7 @@ val scGap : Float = 0.05f
 val scDiv : Double = 0.51
 val foreColor : Int = Color.parseColor("#4CAF50")
 val backColor : Int = Color.parseColor("#BDBDBD")
+val delay : Long = 20
 
 fun Int.inverse() : Float = 1f / this
 fun Float.scaleFactor() : Float = Math.floor(this / scDiv).toFloat()
@@ -49,6 +50,8 @@ fun Canvas.drawHorizontalH(j : Int, sc : Float, size : Float, paint : Paint) {
 }
 
 fun Canvas.drawBoxH(i : Int, sc1 : Float, sc2 : Float, size : Float, paint : Paint) {
+    drawVerticalH(0, 0f, size, paint)
+    drawHorizontalH(0, 0f, size, paint)
     for (j in 0..(lines - 1)) {
         drawVerticalH(j, sc1, size, paint)
         drawHorizontalH(j, sc2, size, paint)
@@ -120,7 +123,7 @@ class BiBoxHView(ctx : Context) : View(ctx) {
             if (animated) {
                 cb()
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(delay)
                     view.invalidate()
                 } catch(ex : Exception) {
 
@@ -237,7 +240,7 @@ class BiBoxHView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : BiBoxHView {
             val view : BiBoxHView = BiBoxHView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
