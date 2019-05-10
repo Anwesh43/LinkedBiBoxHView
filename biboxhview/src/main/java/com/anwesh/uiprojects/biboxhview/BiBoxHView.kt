@@ -31,3 +31,47 @@ fun Float.mirrorValue(a : Int, b : Int) : Float {
     return (1 - k) * a.inverse() + k * b.inverse()
 }
 fun Float.updateValue(dir : Float, a : Int, b : Int) : Float = mirrorValue(a, b)
+
+fun Canvas.drawVerticalH(j : Int, sc : Float, size : Float, paint : Paint) {
+    save()
+    translate(size / 2, 0f)
+    rotate(90f * (1f - 2 * j) * sc.divideScale(j, lines))
+    drawLine(0f, 0f, 0f, -size / 2, paint)
+    restore()
+}
+
+fun Canvas.drawHorizontalH(j : Int, sc : Float, size : Float, paint : Paint) {
+    save()
+    translate(size, -size / 2)
+    rotate(90f * (1f - 2 * j) * sc.divideScale(j, lines))
+    drawLine(0f, 0f, -size / 2,  0f, paint)
+    restore()
+}
+
+fun Canvas.drawBoxH(i : Int, sc1 : Float, sc2 : Float, size : Float, paint : Paint) {
+    for (j in 0..(lines - 1)) {
+        drawVerticalH(j, sc1, size, paint)
+        drawHorizontalH(j, sc2, size, paint)
+    }
+}
+
+fun Canvas.drawBBHNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = h / (nodes + 1)
+    val size : Float = gap / sizeFactor
+    val sc1 : Float = scale.divideScale(0, 2)
+    val sc2 : Float = scale.divideScale(1, 2)
+    paint.color = foreColor
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    paint.strokeCap = Paint.Cap.ROUND 
+    save()
+    translate(w / 2, gap * (i + 1))
+    for (j in 0..(parts - 1)) {
+        save()
+        scale(1f - 2 * j, 1f)
+        drawBoxH(i, sc1.divideScale(j, lines), sc2.divideScale(j, lines), size, paint)
+        restore()
+    }
+    restore()
+}
